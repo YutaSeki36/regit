@@ -36,7 +36,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestGitStatusListParseError in github.com/regit/cmd">
+  <component name="RunManager" selected="Go Test.TestGitStatusListParse in github.com/regit/cmd">
     <configuration name="go build github.com/regit" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="regit" />
       <working_directory value="$PROJECT_DIR$" />
@@ -70,8 +70,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.TestGitStatusListParseError in github.com/regit/cmd" />
         <item itemvalue="Go Test.TestGitStatusListParse in github.com/regit/cmd" />
+        <item itemvalue="Go Test.TestGitStatusListParseError in github.com/regit/cmd" />
         <item itemvalue="Go Build.go build github.com/regit" />
       </list>
     </recent_temporary>
@@ -123,7 +123,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/cmd/git_parser_test.go</url>
-          <line>44</line>
+          <line>50</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
