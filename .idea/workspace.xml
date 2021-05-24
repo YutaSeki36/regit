@@ -60,6 +60,17 @@
       <pattern value="^\QTestGitCmdExcutor_optionToString\E$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestGitCmdExecutor_ExecuteCmdGitCheckout in github.com/regit/cmd" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="regit" />
+      <working_directory value="$PROJECT_DIR$/cmd" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/regit/cmd" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestGitCmdExecutor_ExecuteCmdGitCheckout\E$" />
+      <method v="2" />
+    </configuration>
     <configuration name="TestGitCmdExecutor_ExecuteCmdGitStatus in github.com/regit/cmd" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="regit" />
       <working_directory value="$PROJECT_DIR$/cmd" />
@@ -82,24 +93,13 @@
       <pattern value="^\QTestGitStatusListParse\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestGitStatusListParseError in github.com/regit/cmd" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="regit" />
-      <working_directory value="$PROJECT_DIR$/cmd" />
-      <framework value="gotest" />
-      <kind value="PACKAGE" />
-      <package value="github.com/regit/cmd" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestGitStatusListParseError\E$" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Go Test.TestGitCmdExecutor_ExecuteCmdGitStatus in github.com/regit/cmd" />
+        <item itemvalue="Go Test.TestGitCmdExecutor_ExecuteCmdGitCheckout in github.com/regit/cmd" />
         <item itemvalue="Go Test.TestGitCmdExceutor_ExecuteCmd in github.com/regit/cmd" />
         <item itemvalue="Go Test.TestGitCmdExcutor_optionToString in github.com/regit/cmd" />
         <item itemvalue="Go Test.TestGitStatusListParse in github.com/regit/cmd" />
-        <item itemvalue="Go Test.TestGitStatusListParseError in github.com/regit/cmd" />
       </list>
     </recent_temporary>
   </component>
@@ -112,38 +112,38 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="354" y="146" key="#Inspections/0.0.1440.900@0.0.1440.900" timestamp="1621431151986" />
-    <state width="1398" height="201" key="GridCell.Tab.0.bottom" timestamp="1621863238157">
+    <state width="1398" height="236" key="GridCell.Tab.0.bottom" timestamp="1621866694415">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="201" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1621863238157" />
-    <state width="1398" height="201" key="GridCell.Tab.0.center" timestamp="1621863238156">
+    <state width="1398" height="236" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1621866694415" />
+    <state width="1398" height="236" key="GridCell.Tab.0.center" timestamp="1621866694414">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="201" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1621863238156" />
-    <state width="1398" height="201" key="GridCell.Tab.0.left" timestamp="1621863238155">
+    <state width="1398" height="236" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1621866694414" />
+    <state width="1398" height="236" key="GridCell.Tab.0.left" timestamp="1621866694413">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="201" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1621863238155" />
-    <state width="1398" height="201" key="GridCell.Tab.0.right" timestamp="1621863238157">
+    <state width="1398" height="236" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1621866694413" />
+    <state width="1398" height="236" key="GridCell.Tab.0.right" timestamp="1621866694414">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="201" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1621863238157" />
-    <state width="1398" height="201" key="GridCell.Tab.1.bottom" timestamp="1621863238159">
+    <state width="1398" height="236" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1621866694414" />
+    <state width="1398" height="201" key="GridCell.Tab.1.bottom" timestamp="1621865850848">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="201" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1621863238159" />
-    <state width="1398" height="201" key="GridCell.Tab.1.center" timestamp="1621863238158">
+    <state width="1398" height="201" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1621865850848" />
+    <state width="1398" height="201" key="GridCell.Tab.1.center" timestamp="1621865850847">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="201" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1621863238158" />
-    <state width="1398" height="201" key="GridCell.Tab.1.left" timestamp="1621863238158">
+    <state width="1398" height="201" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1621865850847" />
+    <state width="1398" height="201" key="GridCell.Tab.1.left" timestamp="1621865850846">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="201" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1621863238158" />
-    <state width="1398" height="201" key="GridCell.Tab.1.right" timestamp="1621863238159">
+    <state width="1398" height="201" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1621865850846" />
+    <state width="1398" height="201" key="GridCell.Tab.1.right" timestamp="1621865850847">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="201" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1621863238159" />
+    <state width="1398" height="201" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1621865850847" />
     <state x="229" y="100" key="SettingsEditor" timestamp="1621515707903">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -163,8 +163,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/cmd/git _executor_test.go</url>
-          <line>6</line>
+          <line>8</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cmd/git _executor_test.go</url>
+          <line>64</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

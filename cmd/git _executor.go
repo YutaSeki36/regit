@@ -9,8 +9,9 @@ import (
 )
 
 type GitCmdResult struct {
-	result  []string
-	success bool
+	result      []string
+	executedCmd string
+	success     bool
 }
 
 type GitRunner interface {
@@ -38,8 +39,19 @@ type GitCheckoutRunner struct {
 }
 
 func (g *GitCheckoutRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
+	cmd := gitCmd.commandBuilder("checkout")
+	if gitCmd.dryRun {
+		_, err := cmd.Output()
+		if err != nil {
+			return nil, err
+		}
+	}
 
-	return nil, nil
+	return &GitCmdResult{
+		result:      nil,
+		success:     true,
+		executedCmd: cmd.String(),
+	}, nil
 }
 
 type GitCmdExecutor struct {
@@ -95,7 +107,7 @@ func (g *GitCmdExecutor) ExecuteCmd(runner GitRunner) (*GitCmdResult, error) {
 	return result, nil
 }
 
-func newGitCmdExecutor(combinableOptions, target, uncombinableOptions []string, targetRegexp string, targetIsNeed bool) (*GitCmdExecutor, error) {
+func newGitCmdExecutor(combinableOptions, target, uncombinableOptions []string, targetRegexp string, targetIsNeed, dryRun bool) (*GitCmdExecutor, error) {
 	var targets []string
 	if strings.Contains(targetRegexp, ",") {
 		targets = strings.Split(targetRegexp, ",")
@@ -126,6 +138,7 @@ func newGitCmdExecutor(combinableOptions, target, uncombinableOptions []string, 
 		targetIsNeed:        targetIsNeed,
 		combinableOptions:   combinableOptions,
 		uncombinableOptions: uncombinableOptions,
+		dryRun:              dryRun,
 	}, nil
 }
 
