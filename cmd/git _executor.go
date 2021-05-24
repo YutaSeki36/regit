@@ -21,7 +21,7 @@ type GitStatusRunner struct {
 }
 
 func (g *GitStatusRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
-	cmd := commandBuilder(gitCmd, "status", gitCmd.executePath)
+	cmd := gitCmd.commandBuilder("status")
 	var r []byte
 	r, err := cmd.Output()
 	if err != nil {
@@ -34,13 +34,12 @@ func (g *GitStatusRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	return &GitCmdResult{result: res, success: true}, nil
 }
 
-func commandBuilder(gitCmd *GitCmdExecutor, subCmd string, target []string) *exec.Cmd {
-	t := strings.Join(target, " ")
-	if t == "" {
-		return exec.Command("git", subCmd, optionsToString(gitCmd.combinableOptions))
-	}
+type GitCheckoutRunner struct {
+}
 
-	return exec.Command("git", subCmd, optionsToString(gitCmd.combinableOptions), strings.Join(target, " "))
+func (g *GitCheckoutRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
+
+	return nil, nil
 }
 
 type GitCmdExecutor struct {
@@ -51,6 +50,25 @@ type GitCmdExecutor struct {
 	combinableOptions   []string
 	uncombinableOptions []string
 	dryRun              bool
+}
+
+func (g *GitCmdExecutor) commandBuilder(subCmd string) *exec.Cmd {
+	var optionBase []string
+	option := append(optionBase, optionsToString(g.combinableOptions))
+	option = append(option, append(g.uncombinableOptions, g.executePath...)...)
+	option = removeEmpty(option)
+
+	return exec.Command("git", subCmd, strings.Join(option, " "))
+}
+
+func removeEmpty(options []string) []string {
+	var result []string
+	for _, v := range options {
+		if v != "" {
+			result = append(result, v)
+		}
+	}
+	return result
 }
 
 func (g *GitCmdExecutor) ExecuteCmd(runner GitRunner) (*GitCmdResult, error) {
