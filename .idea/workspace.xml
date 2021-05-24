@@ -37,7 +37,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.TestGitCmdExcutor_optionToString in github.com/regit/cmd">
+  <component name="RunManager" selected="Go Test.TestGitCmdExceutor_ExecuteCmd in github.com/regit/cmd">
     <configuration name="go build github.com/regit" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="regit" />
       <working_directory value="$PROJECT_DIR$" />
@@ -45,6 +45,17 @@
       <filePath value="$PROJECT_DIR$/main.go" />
       <package value="github.com/regit" />
       <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestGitCmdExceutor_ExecuteCmd in github.com/regit/cmd" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="regit" />
+      <working_directory value="$PROJECT_DIR$/cmd" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/regit/cmd" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestGitCmdExceutor_ExecuteCmd\E$" />
       <method v="2" />
     </configuration>
     <configuration name="TestGitCmdExcutor_optionToString in github.com/regit/cmd" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -82,6 +93,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.TestGitCmdExceutor_ExecuteCmd in github.com/regit/cmd" />
         <item itemvalue="Go Test.TestGitCmdExcutor_optionToString in github.com/regit/cmd" />
         <item itemvalue="Go Test.TestGitStatusListParse in github.com/regit/cmd" />
         <item itemvalue="Go Test.TestGitStatusListParseError in github.com/regit/cmd" />
@@ -98,38 +110,38 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="354" y="146" key="#Inspections/0.0.1440.900@0.0.1440.900" timestamp="1621431151986" />
-    <state width="1398" height="236" key="GridCell.Tab.0.bottom" timestamp="1621516991135">
+    <state width="1398" height="292" key="GridCell.Tab.0.bottom" timestamp="1621690637648">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="236" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1621516991135" />
-    <state width="1398" height="236" key="GridCell.Tab.0.center" timestamp="1621516991134">
+    <state width="1398" height="292" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1621690637648" />
+    <state width="1398" height="292" key="GridCell.Tab.0.center" timestamp="1621690637646">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="236" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1621516991134" />
-    <state width="1398" height="236" key="GridCell.Tab.0.left" timestamp="1621516991134">
+    <state width="1398" height="292" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1621690637646" />
+    <state width="1398" height="292" key="GridCell.Tab.0.left" timestamp="1621690637644">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="236" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1621516991134" />
-    <state width="1398" height="236" key="GridCell.Tab.0.right" timestamp="1621516991135">
+    <state width="1398" height="292" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1621690637644" />
+    <state width="1398" height="292" key="GridCell.Tab.0.right" timestamp="1621690637647">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="236" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1621516991135" />
-    <state width="1398" height="292" key="GridCell.Tab.1.bottom" timestamp="1621432248255">
+    <state width="1398" height="292" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1621690637647" />
+    <state width="1398" height="292" key="GridCell.Tab.1.bottom" timestamp="1621690638464">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="292" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1621432248255" />
-    <state width="1398" height="292" key="GridCell.Tab.1.center" timestamp="1621432248254">
+    <state width="1398" height="292" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1621690638464" />
+    <state width="1398" height="292" key="GridCell.Tab.1.center" timestamp="1621690638462">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="292" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1621432248254" />
-    <state width="1398" height="292" key="GridCell.Tab.1.left" timestamp="1621432248254">
+    <state width="1398" height="292" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1621690638462" />
+    <state width="1398" height="292" key="GridCell.Tab.1.left" timestamp="1621690638458">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="292" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1621432248254" />
-    <state width="1398" height="292" key="GridCell.Tab.1.right" timestamp="1621432248254">
+    <state width="1398" height="292" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1621690638458" />
+    <state width="1398" height="292" key="GridCell.Tab.1.right" timestamp="1621690638463">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="292" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1621432248254" />
+    <state width="1398" height="292" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1621690638463" />
     <state x="229" y="100" key="SettingsEditor" timestamp="1621515707903">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -146,6 +158,16 @@
           <url>file://$PROJECT_DIR$/cmd/git_parser_test.go</url>
           <line>50</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cmd/git _executor_test.go</url>
+          <line>6</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/cmd/git _executor.go</url>
+          <line>37</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

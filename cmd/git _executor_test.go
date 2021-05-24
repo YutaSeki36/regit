@@ -2,8 +2,12 @@ package cmd
 
 import "testing"
 
-func TestGitCmdExceutor_ExecuteCmd(t *testing.T) {
-
+func TestGitCmdExecutor_ExecuteCmdGitStatus(t *testing.T) {
+	cmd, _ := newGitCmdExecutor([]string{"s"}, []string{}, []string{}, "", false)
+	_, err := cmd.ExecuteCmd(&GitStatusRunner{})
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestGitCmdExecutor_optionToString(t *testing.T) {
