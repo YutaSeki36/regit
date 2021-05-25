@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -95,8 +94,7 @@ func (g *GitCmdExecutor) ExecuteCmd(runner GitRunner) (*GitCmdResult, error) {
 		}
 
 		if len(executePath) == 0 {
-			fmt.Println("there is no target path")
-			return nil, nil
+			return nil, errors.New("there is no target path")
 		}
 		g.executePath = executePath
 	}
