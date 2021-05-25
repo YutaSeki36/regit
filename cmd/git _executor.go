@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -39,11 +40,17 @@ type GitCheckoutRunner struct {
 
 func (g *GitCheckoutRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	cmd := gitCmd.commandBuilder("checkout")
+
+	target := strings.Join(gitCmd.executePath, " ")
+	fmt.Printf("checkout targets: %s \n", target)
 	if gitCmd.dryRun {
 		_, err := cmd.Output()
 		if err != nil {
 			return nil, err
 		}
+		fmt.Println("checkout completed")
+	} else {
+		fmt.Println("To execute the checkout, set dryRun option to false and re-execute.")
 	}
 
 	return &GitCmdResult{
