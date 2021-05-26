@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -12,22 +13,68 @@ var checkoutCmd = &cobra.Command{
 	Short: "checkout is ...",
 	Long: `Write later
 `,
-	Run: func(cmd *cobra.Command, args []string) {
-		// TODO: 正規表現の文字列を引数で受け取る
-		fmt.Println("checkout called")
-	},
+	Run: checkout,
 }
 
+var theirs bool
+var ours bool
+
 func init() {
+	checkoutCmd.PersistentFlags().StringP("target", "t", "", "")
+	checkoutCmd.PersistentFlags().BoolVar(&theirs, "theirs", false, "")
+	checkoutCmd.PersistentFlags().BoolVar(&ours, "ours", false, "")
+
 	rootCmd.AddCommand(checkoutCmd)
+}
 
-	// Here you will define your flags and configuration settings.
+func checkout(cmd *cobra.Command, args []string) {
+	if target, err := cmd.PersistentFlags().GetString("target"); err == nil {
+		if target == "" {
+			fmt.Println("target should not be blank")
+			os.Exit(2)
+		}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// checkoutCmd.PersistentFlags().String("foo", "", "A help for foo")
+		var gitStatusResult *GitCmdResult
+		// git status -s
+		{
+			cmd, err := newGitCmdExecutor([]string{"s"}, []string{}, []string{}, "", false, false)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// checkoutCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+			gitStatusResult, err = cmd.ExecuteCmd(&GitStatusRunner{})
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+		}
+
+		// git checkout
+		{
+			var options []string
+			if theirs && ours {
+				fmt.Println("you cannot select both theirs and ours option")
+				os.Exit(1)
+			}
+			if theirs {
+				options = append(options, "--theirs")
+			}
+			if ours {
+				options = append(options, "--ours")
+			}
+
+			cmd, err := newGitCmdExecutor([]string{}, gitStatusResult.result, options, target, true, dryRun)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+
+			cmd.ExecuteCmd(&GitCheckoutRunner{})
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+		}
+	}
 }

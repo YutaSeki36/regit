@@ -43,7 +43,7 @@ func (g *GitCheckoutRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 
 	target := strings.Join(gitCmd.executePath, " ")
 	fmt.Printf("checkout targets: %s \n", target)
-	if gitCmd.dryRun {
+	if !gitCmd.dryRun {
 		_, err := cmd.Output()
 		if err != nil {
 			return nil, err

@@ -9,10 +9,17 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "regit",
 	Short: "Regit is for git commands that support regular expressions",
-	Long: `Write later`,
+	Long:  `Write later`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// ルートコマンドにアクセスした時はhelpなどを出す？
 	},
+}
+
+var dryRun bool
+
+func init() {
+
+	rootCmd.PersistentFlags().BoolVarP(&dryRun, "dryRun", "d", false, "dryRun enable flag")
 }
 
 func Execute() {
