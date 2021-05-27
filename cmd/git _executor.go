@@ -50,7 +50,7 @@ func (g *GitCheckoutRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 		}
 		fmt.Println("checkout completed")
 	} else {
-		fmt.Println("To execute the checkout, set dryRun option to false and re-execute.")
+		fmt.Println("To execute the checkout, rerun without the dryrun option")
 	}
 
 	return &GitCmdResult{

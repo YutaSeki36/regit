@@ -10,10 +10,9 @@ import (
 // checkoutCmd represents the checkout command
 var checkoutCmd = &cobra.Command{
 	Use:   "checkout",
-	Short: "checkout is ...",
-	Long: `Write later
-`,
-	Run: checkout,
+	Short: "checkout is used for file restore",
+	Long:  `checkout is used for file restore`,
+	Run:   checkout,
 }
 
 var theirs bool
