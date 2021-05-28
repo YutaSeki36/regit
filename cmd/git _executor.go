@@ -60,6 +60,17 @@ func (g *GitCheckoutRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	}, nil
 }
 
+type GitBranchRunner struct {
+}
+
+func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
+	if !gitCmd.targetIsNeed {
+
+	}
+
+	return nil, nil
+}
+
 type GitCmdExecutor struct {
 	targetIsNeed        bool
 	target              []string

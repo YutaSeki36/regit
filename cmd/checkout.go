@@ -34,7 +34,7 @@ func checkout(cmd *cobra.Command, args []string) {
 		}
 
 		var gitStatusResult *GitCmdResult
-		// git status -s
+		// git checkout -s
 		{
 			cmd, err := newGitCmdExecutor([]string{"s"}, []string{}, []string{}, "", false, false)
 			if err != nil {
