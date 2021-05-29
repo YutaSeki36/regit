@@ -65,7 +65,20 @@ type GitBranchRunner struct {
 
 func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	if !gitCmd.targetIsNeed {
-
+		cmd := gitCmd.commandBuilder("branch")
+		cmdResult, err := cmd.Output()
+		if err != nil {
+			return nil, err
+		}
+		result, err := GitBranchParse(string(cmdResult))
+		if err != nil {
+			return nil, err
+		}
+		return &GitCmdResult{
+			result:      result,
+			executedCmd: cmd.String(),
+			success:     false,
+		}, nil
 	}
 
 	return nil, nil
@@ -87,7 +100,10 @@ func (g *GitCmdExecutor) commandBuilder(subCmd string) *exec.Cmd {
 	option = append(option, append(g.uncombinableOptions, g.executePath...)...)
 	option = removeEmpty(option)
 
-	return exec.Command("git", subCmd, strings.Join(option, " "))
+	if option != nil {
+		return exec.Command("git", subCmd, strings.Join(option, " "))
+	}
+	return exec.Command("git", subCmd)
 }
 
 func removeEmpty(options []string) []string {

@@ -113,3 +113,38 @@ func TestGitCmdExecutor_optionToString(t *testing.T) {
 		}
 	}
 }
+
+func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
+	testCase := []struct {
+		name                string
+		targetIsNeed        bool
+		combinableOptions   []string
+		target              []string
+		uncombinableOptions []string
+		targetRegexp        string
+		expectCmd           string
+	}{
+		{
+			name:                "git branch",
+			targetIsNeed:        false,
+			combinableOptions:   []string{},
+			uncombinableOptions: []string{},
+			target:              []string{},
+			targetRegexp:        "",
+			expectCmd:           "/usr/local/bin/git branch",
+		},
+	}
+
+	for _, tc := range testCase {
+		t.Run(tc.name, func(t *testing.T) {
+			cmd, _ := newGitCmdExecutor(tc.combinableOptions, tc.target, tc.uncombinableOptions, tc.targetRegexp, tc.targetIsNeed, false)
+			result, err := cmd.ExecuteCmd(&GitBranchRunner{})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if result.executedCmd != tc.expectCmd {
+				t.Fatalf("executed command should be [%s], but [%s]", tc.expectCmd, result.executedCmd)
+			}
+		})
+	}
+}
