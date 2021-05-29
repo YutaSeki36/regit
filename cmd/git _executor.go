@@ -10,7 +10,7 @@ import (
 
 type GitCmdResult struct {
 	result      []string
-	executedCmd string
+	executedCmd []string
 	success     bool
 }
 
@@ -53,10 +53,11 @@ func (g *GitCheckoutRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 		fmt.Println("To execute the checkout, rerun without the dryrun option")
 	}
 
+	executedCmd := []string{cmd.String()}
 	return &GitCmdResult{
 		result:      nil,
 		success:     true,
-		executedCmd: cmd.String(),
+		executedCmd: executedCmd,
 	}, nil
 }
 
@@ -74,9 +75,11 @@ func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		executedCmd := []string{cmd.String()}
 		return &GitCmdResult{
 			result:      result,
-			executedCmd: cmd.String(),
+			executedCmd: executedCmd,
 			success:     false,
 		}, nil
 	}

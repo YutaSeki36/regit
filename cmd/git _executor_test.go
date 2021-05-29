@@ -62,12 +62,12 @@ func TestGitCmdExecutor_ExecuteCmdGitCheckout(t *testing.T) {
 
 	for _, tc := range testCase {
 		t.Run(tc.name, func(t *testing.T) {
-			cmd, _ := newGitCmdExecutor(tc.combinableOptions, tc.target, tc.uncombinableOptions, tc.targetRegexp, tc.targetIsNeed, false)
+			cmd, _ := newGitCmdExecutor(tc.combinableOptions, tc.target, tc.uncombinableOptions, tc.targetRegexp, tc.targetIsNeed, true)
 			result, err := cmd.ExecuteCmd(&GitCheckoutRunner{})
 			if err != nil {
 				t.Fatal(err)
 			}
-			if result.executedCmd != tc.expectCmd {
+			if result.executedCmd[0] != tc.expectCmd {
 				t.Fatalf("executed command should be [%s], but [%s]", tc.expectCmd, result.executedCmd)
 			}
 		})
@@ -142,7 +142,7 @@ func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if result.executedCmd != tc.expectCmd {
+			if result.executedCmd[0] != tc.expectCmd {
 				t.Fatalf("executed command should be [%s], but [%s]", tc.expectCmd, result.executedCmd)
 			}
 		})
