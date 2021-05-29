@@ -22,7 +22,7 @@ type GitStatusRunner struct {
 }
 
 func (g *GitStatusRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
-	cmd := gitCmd.commandBuilder("status")
+	cmd := gitCmd.commandBuilderInBulk("status")
 	var r []byte
 	r, err := cmd.Output()
 	if err != nil {
@@ -39,7 +39,7 @@ type GitCheckoutRunner struct {
 }
 
 func (g *GitCheckoutRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
-	cmd := gitCmd.commandBuilder("checkout")
+	cmd := gitCmd.commandBuilderInBulk("checkout")
 
 	target := strings.Join(gitCmd.executePath, " ")
 	fmt.Printf("checkout targets: %s \n", target)
@@ -66,7 +66,7 @@ type GitBranchRunner struct {
 
 func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	if !gitCmd.targetIsNeed {
-		cmd := gitCmd.commandBuilder("branch")
+		cmd := gitCmd.commandBuilderInBulk("branch")
 		cmdResult, err := cmd.Output()
 		if err != nil {
 			return nil, err
@@ -84,7 +84,19 @@ func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 		}, nil
 	}
 
-	return nil, nil
+	executedCmds := gitCmd.commandsBuilder("branch")
+	//TODO Execute command execution function asynchronously
+
+	var resultExecutedCmds []string
+	for _, e := range executedCmds {
+		resultExecutedCmds = append(resultExecutedCmds, e.String())
+	}
+
+	return &GitCmdResult{
+		result:      nil,
+		executedCmd: resultExecutedCmds,
+		success:     false,
+	}, nil
 }
 
 type GitCmdExecutor struct {
@@ -97,7 +109,22 @@ type GitCmdExecutor struct {
 	dryRun              bool
 }
 
-func (g *GitCmdExecutor) commandBuilder(subCmd string) *exec.Cmd {
+func (g *GitCmdExecutor) commandsBuilder(subCmd string) []*exec.Cmd {
+	var commands []*exec.Cmd
+	for _, e := range g.executePath {
+		option := []string{optionsToString(g.combinableOptions)}
+		option = append(option, append(g.uncombinableOptions, e)...)
+		option = removeEmpty(option)
+		if option != nil {
+			commands = append(commands, exec.Command("git", subCmd, strings.Join(option, " ")))
+			continue
+		}
+		commands = append(commands, exec.Command("git", subCmd))
+	}
+	return commands
+}
+
+func (g *GitCmdExecutor) commandBuilderInBulk(subCmd string) *exec.Cmd {
 	var optionBase []string
 	option := append(optionBase, optionsToString(g.combinableOptions))
 	option = append(option, append(g.uncombinableOptions, g.executePath...)...)

@@ -122,7 +122,7 @@ func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
 		target              []string
 		uncombinableOptions []string
 		targetRegexp        string
-		expectCmd           string
+		expectCmds          []string
 	}{
 		{
 			name:                "git branch",
@@ -131,7 +131,16 @@ func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
 			uncombinableOptions: []string{},
 			target:              []string{},
 			targetRegexp:        "",
-			expectCmd:           "/usr/local/bin/git branch",
+			expectCmds:          []string{"/usr/local/bin/git branch"},
+		},
+		{
+			name:                "Pattern 1: git branch -d ",
+			targetIsNeed:        true,
+			combinableOptions:   []string{"d"},
+			uncombinableOptions: []string{},
+			target:              []string{"feature/test", "feature/aaa", "develop"},
+			targetRegexp:        "feature/.*",
+			expectCmds:          []string{"/usr/local/bin/git branch -d feature/test", "/usr/local/bin/git branch -d feature/aaa"},
 		},
 	}
 
@@ -142,9 +151,20 @@ func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if result.executedCmd[0] != tc.expectCmd {
-				t.Fatalf("executed command should be [%s], but [%s]", tc.expectCmd, result.executedCmd)
+			for _, e := range result.executedCmd {
+				if !contains(tc.expectCmds, e) {
+					t.Fatalf("executed command should contain [%s]", e)
+				}
 			}
 		})
 	}
+}
+
+func contains(s []string, e string) bool {
+	for _, v := range s {
+		if e == v {
+			return true
+		}
+	}
+	return false
 }
