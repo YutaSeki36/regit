@@ -122,3 +122,43 @@ func TestGitbranchParseError(t *testing.T) {
 		}
 	}
 }
+
+func TestCheckGitBranchDeleteResult(t *testing.T) {
+	testCase := []string{
+		"Deleted branch feature/test (was 000000).",
+		"Deleted branch production (was 111111).",
+	}
+
+	for _, tc := range testCase {
+		err := CheckGitBranchDeleteResult(tc)
+		if err != nil {
+			t.Fatal("err should be nil")
+		}
+	}
+}
+
+func TestCheckGitBranchDeleteResultError(t *testing.T) {
+	testCase := []struct {
+		errorText       string
+		wantErrorResult string
+	}{
+		{
+			errorText:       "error: branch 'fffasdfa' not found.",
+			wantErrorResult: "branch 'fffasdfa' not found.",
+		},
+		{
+			errorText:       "error: The branch 'branchname' is not fully merged.",
+			wantErrorResult: "The branch 'branchname' is not fully merged.",
+		},
+	}
+
+	for _, tc := range testCase {
+		err := CheckGitBranchDeleteResult(tc.errorText)
+		if err == nil {
+			t.Fatal("err should not be nil")
+		}
+		if tc.wantErrorResult != err.Error() {
+			t.Fatal("error is different from expected value")
+		}
+	}
+}

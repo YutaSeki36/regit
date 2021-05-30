@@ -16,7 +16,7 @@ func GitStatusParse(status string) ([]string, error) {
 		if len(v) == 0 {
 			continue
 		}
-		if len(v) < 3 {
+		if len(v) < 4 {
 			return nil, errors.New("status format is invalid")
 		}
 		result = append(result, v[3:])
@@ -37,7 +37,7 @@ func GitBranchParse(branches string) ([]string, error) {
 			continue
 		}
 		if len(b) < 3 {
-			return nil, errors.New("branchName format is invalid")
+			return nil, errors.New("executedCmdString format is invalid")
 		}
 		prefix, branchName := b[:2], b[2:]
 		if strings.Contains(prefix, "*") {
@@ -48,4 +48,19 @@ func GitBranchParse(branches string) ([]string, error) {
 	}
 
 	return result, nil
+}
+
+func CheckGitBranchDeleteResult(result string) error {
+	if result == "" {
+		return errors.New("result text should not be blank")
+	}
+	if len(result) < 4 {
+		return errors.New("executedCmdString format is invalid")
+	}
+	resultPrefix := result[:5]
+	if resultPrefix == "error" {
+		return errors.New(result[7:])
+	}
+
+	return nil
 }

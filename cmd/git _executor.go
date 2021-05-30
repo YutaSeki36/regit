@@ -61,6 +61,11 @@ func (g *GitCheckoutRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	}, nil
 }
 
+type asyncRunnerResult struct {
+	executedCmdString string
+	error             error
+}
+
 type GitBranchRunner struct {
 }
 
@@ -84,8 +89,30 @@ func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 		}, nil
 	}
 
+	target := strings.Join(gitCmd.executePath, " ")
+	fmt.Printf("branch delete targets: %s \n", target)
+
 	executedCmds := gitCmd.commandsBuilder("branch")
-	//TODO Execute command execution function asynchronously
+	if dryRun {
+		responseCh := make(chan *asyncRunnerResult, len(executedCmds))
+		defer close(responseCh)
+
+		for _, executedCmd := range executedCmds {
+			go gitBranchAsyncRunner(executedCmd, responseCh)
+		}
+
+		for i := 0; i < len(executedCmds); i++ {
+			chi := <-responseCh
+			if chi.error != nil {
+				fmt.Printf("Failed: %s. Reason: %s", chi.executedCmdString, chi.error.Error())
+				fmt.Println()
+			}
+		}
+
+		fmt.Println("Finished")
+	} else {
+		fmt.Println("To execute the del_branch, rerun without the dryrun option")
+	}
 
 	var resultExecutedCmds []string
 	for _, e := range executedCmds {
@@ -97,6 +124,27 @@ func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 		executedCmd: resultExecutedCmds,
 		success:     false,
 	}, nil
+}
+
+func gitBranchAsyncRunner(cmd *exec.Cmd, result chan<- *asyncRunnerResult) {
+	cmdResult, err := cmd.Output()
+	if err != nil {
+		result <- &asyncRunnerResult{
+			error:             err,
+			executedCmdString: cmd.String(),
+		}
+	}
+	if err := CheckGitBranchDeleteResult(string(cmdResult)); err != nil {
+		result <- &asyncRunnerResult{
+			error:             err,
+			executedCmdString: cmd.String(),
+		}
+	}
+
+	result <- &asyncRunnerResult{
+		error:             nil,
+		executedCmdString: cmd.String(),
+	}
 }
 
 type GitCmdExecutor struct {
