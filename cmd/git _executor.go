@@ -93,7 +93,7 @@ func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	fmt.Printf("branch delete targets: %s \n", target)
 
 	executedCmds := gitCmd.commandsBuilder("branch")
-	if dryRun {
+	if !dryRun {
 		responseCh := make(chan *asyncRunnerResult, len(executedCmds))
 		defer close(responseCh)
 
@@ -133,12 +133,14 @@ func gitBranchAsyncRunner(cmd *exec.Cmd, result chan<- *asyncRunnerResult) {
 			error:             err,
 			executedCmdString: cmd.String(),
 		}
+		return
 	}
 	if err := CheckGitBranchDeleteResult(string(cmdResult)); err != nil {
 		result <- &asyncRunnerResult{
 			error:             err,
 			executedCmdString: cmd.String(),
 		}
+		return
 	}
 
 	result <- &asyncRunnerResult{
@@ -160,11 +162,12 @@ type GitCmdExecutor struct {
 func (g *GitCmdExecutor) commandsBuilder(subCmd string) []*exec.Cmd {
 	var commands []*exec.Cmd
 	for _, e := range g.executePath {
-		option := []string{optionsToString(g.combinableOptions)}
+		option := []string{subCmd}
+		option = append(option, optionsToString(g.combinableOptions))
 		option = append(option, append(g.uncombinableOptions, e)...)
 		option = removeEmpty(option)
-		if option != nil {
-			commands = append(commands, exec.Command("git", subCmd, strings.Join(option, " ")))
+		if len(option) != 0 {
+			commands = append(commands, exec.Command("git", option...))
 			continue
 		}
 		commands = append(commands, exec.Command("git", subCmd))
@@ -237,7 +240,7 @@ func newGitCmdExecutor(combinableOptions, target, uncombinableOptions []string, 
 	}
 
 	for _, v := range combinableOptions {
-		if len(v) != 1 {
+		if len(v) != 1 && v != "" {
 			return nil, errors.New("combinableOption should be one character")
 		}
 	}
@@ -262,5 +265,9 @@ func optionsToString(options []string) string {
 	for _, o := range options {
 		option = append(option, o...)
 	}
-	return string(option)
+	result := string(option)
+	if result == "-" {
+		return ""
+	}
+	return result
 }

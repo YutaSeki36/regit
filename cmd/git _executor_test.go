@@ -123,6 +123,7 @@ func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
 		uncombinableOptions []string
 		targetRegexp        string
 		expectCmds          []string
+		dryRun              bool
 	}{
 		{
 			name:                "git branch",
@@ -132,6 +133,7 @@ func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
 			target:              []string{},
 			targetRegexp:        "",
 			expectCmds:          []string{"/usr/local/bin/git branch"},
+			dryRun:              true,
 		},
 		{
 			name:                "Pattern 1: git branch -d ",
@@ -141,12 +143,13 @@ func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
 			target:              []string{"feature/test", "feature/aaa", "develop"},
 			targetRegexp:        "feature/.*",
 			expectCmds:          []string{"/usr/local/bin/git branch -d feature/test", "/usr/local/bin/git branch -d feature/aaa"},
+			dryRun:              true,
 		},
 	}
 
 	for _, tc := range testCase {
 		t.Run(tc.name, func(t *testing.T) {
-			cmd, _ := newGitCmdExecutor(tc.combinableOptions, tc.target, tc.uncombinableOptions, tc.targetRegexp, tc.targetIsNeed, false)
+			cmd, _ := newGitCmdExecutor(tc.combinableOptions, tc.target, tc.uncombinableOptions, tc.targetRegexp, tc.targetIsNeed, tc.dryRun)
 			result, err := cmd.ExecuteCmd(&GitBranchRunner{})
 			if err != nil {
 				t.Fatal(err)

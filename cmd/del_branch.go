@@ -2,35 +2,59 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"os"
 )
 
 // delBranchCmd represents the delBranch command
 var delBranchCmd = &cobra.Command{
 	Use:   "del_branch",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delBranch called")
-	},
+	Short: "del_branch is used to delete a branch.",
+	Long:  `del_branch is used to delete a branch.`,
+	Run:   delBranch,
 }
 
 func init() {
+	delBranchCmd.PersistentFlags().StringP("target", "t", "", "")
 	rootCmd.AddCommand(delBranchCmd)
+}
 
-	// Here you will define your flags and configuration settings.
+func delBranch(cmd *cobra.Command, args []string) {
+	if target, err := cmd.PersistentFlags().GetString("target"); err == nil {
+		if target == "" {
+			fmt.Println("target should not be blank")
+			os.Exit(2)
+		}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// delBranchCmd.PersistentFlags().String("foo", "", "A help for foo")
+		var gitBranchResult *GitCmdResult
+		// git branch
+		{
+			cmd, err := newGitCmdExecutor([]string{""}, []string{}, []string{}, "", false, false)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// delBranchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+			gitBranchResult, err = cmd.ExecuteCmd(&GitBranchRunner{})
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+		}
+
+		// git branch -d
+		{
+			cmd, err := newGitCmdExecutor([]string{"d"}, gitBranchResult.result, []string{}, target, true, dryRun)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+
+			cmd.ExecuteCmd(&GitBranchRunner{})
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+		}
+	}
 }
