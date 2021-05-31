@@ -4,6 +4,10 @@ Regit is for git commands that support regular expressions.
 
 This allows you to work with specific files or branches in bulk.
 
+## Setup
+```
+$go install github.com/YutaSeki36/regit
+```
 ## Usage
 
 ### checkout
