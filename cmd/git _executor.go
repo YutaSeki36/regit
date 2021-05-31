@@ -69,6 +69,8 @@ type asyncRunnerResult struct {
 type GitBranchRunner struct {
 }
 
+const concurrencyLimitNum = 15
+
 func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	if !gitCmd.targetIsNeed {
 		cmd := gitCmd.commandBuilderInBulk("branch")
@@ -94,11 +96,13 @@ func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 
 	executedCmds := gitCmd.commandsBuilder("branch")
 	if !dryRun {
+		concurrencyLimitSignal := make(chan struct{}, concurrencyLimitNum)
 		responseCh := make(chan *asyncRunnerResult, len(executedCmds))
+		defer close(concurrencyLimitSignal)
 		defer close(responseCh)
 
 		for _, executedCmd := range executedCmds {
-			go gitBranchAsyncRunner(executedCmd, responseCh)
+			go gitBranchAsyncRunner(executedCmd, responseCh, concurrencyLimitSignal)
 		}
 
 		for i := 0; i < len(executedCmds); i++ {
@@ -126,13 +130,15 @@ func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	}, nil
 }
 
-func gitBranchAsyncRunner(cmd *exec.Cmd, result chan<- *asyncRunnerResult) {
+func gitBranchAsyncRunner(cmd *exec.Cmd, result chan<- *asyncRunnerResult, sig chan struct{}) {
+	sig <- struct{}{}
 	cmdResult, err := cmd.Output()
 	if err != nil {
 		result <- &asyncRunnerResult{
 			error:             err,
 			executedCmdString: cmd.String(),
 		}
+		<-sig
 		return
 	}
 	if err := CheckGitBranchDeleteResult(string(cmdResult)); err != nil {
@@ -140,6 +146,7 @@ func gitBranchAsyncRunner(cmd *exec.Cmd, result chan<- *asyncRunnerResult) {
 			error:             err,
 			executedCmdString: cmd.String(),
 		}
+		<-sig
 		return
 	}
 
@@ -147,6 +154,7 @@ func gitBranchAsyncRunner(cmd *exec.Cmd, result chan<- *asyncRunnerResult) {
 		error:             nil,
 		executedCmdString: cmd.String(),
 	}
+	<-sig
 }
 
 type GitCmdExecutor struct {
