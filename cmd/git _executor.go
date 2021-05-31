@@ -184,13 +184,13 @@ func (g *GitCmdExecutor) commandsBuilder(subCmd string) []*exec.Cmd {
 }
 
 func (g *GitCmdExecutor) commandBuilderInBulk(subCmd string) *exec.Cmd {
-	var optionBase []string
+	optionBase := []string{subCmd}
 	option := append(optionBase, optionsToString(g.combinableOptions))
 	option = append(option, append(g.uncombinableOptions, g.executePath...)...)
 	option = removeEmpty(option)
 
 	if option != nil {
-		return exec.Command("git", subCmd, strings.Join(option, " "))
+		return exec.Command("git", option...)
 	}
 	return exec.Command("git", subCmd)
 }
