@@ -15,7 +15,7 @@ var delBranchCmd = &cobra.Command{
 }
 
 func init() {
-	delBranchCmd.PersistentFlags().StringP("target", "t", "", "")
+	delBranchCmd.PersistentFlags().StringP("target", "t", "", "Set the branch name to be deleted with a regular expression.")
 	rootCmd.AddCommand(delBranchCmd)
 }
 

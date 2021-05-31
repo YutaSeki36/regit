@@ -19,7 +19,7 @@ var theirs bool
 var ours bool
 
 func init() {
-	checkoutCmd.PersistentFlags().StringP("target", "t", "", "")
+	checkoutCmd.PersistentFlags().StringP("target", "t", "", "Set the target file name to check out with a regular expression.")
 	checkoutCmd.PersistentFlags().BoolVar(&theirs, "theirs", false, "")
 	checkoutCmd.PersistentFlags().BoolVar(&ours, "ours", false, "")
 
