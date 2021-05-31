@@ -95,7 +95,7 @@ func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	fmt.Printf("branch delete targets: %s \n", target)
 
 	executedCmds := gitCmd.commandsBuilder("branch")
-	if !dryRun {
+	if !gitCmd.dryRun {
 		concurrencyLimitSignal := make(chan struct{}, concurrencyLimitNum)
 		responseCh := make(chan *asyncRunnerResult, len(executedCmds))
 		defer close(concurrencyLimitSignal)

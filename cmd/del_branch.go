@@ -44,7 +44,7 @@ func delBranch(cmd *cobra.Command, args []string) {
 
 		// git branch -d
 		{
-			cmd, err := newGitCmdExecutor([]string{"d"}, gitBranchResult.result, []string{}, target, true, dryRun)
+			cmd, err := newGitCmdExecutor([]string{"D"}, gitBranchResult.result, []string{}, target, true, dryRun)
 			if err != nil {
 				fmt.Println(err.Error())
 				os.Exit(1)
