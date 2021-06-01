@@ -69,7 +69,7 @@ type asyncRunnerResult struct {
 type GitBranchRunner struct {
 }
 
-const concurrencyLimitNum = 15
+const concurrencyLimitNum = 10
 
 func (g *GitBranchRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	if !gitCmd.targetIsNeed {
@@ -184,8 +184,8 @@ func (g *GitCmdExecutor) commandsBuilder(subCmd string) []*exec.Cmd {
 }
 
 func (g *GitCmdExecutor) commandBuilderInBulk(subCmd string) *exec.Cmd {
-	optionBase := []string{subCmd}
-	option := append(optionBase, optionsToString(g.combinableOptions))
+	option := []string{subCmd}
+	option = append(option, optionsToString(g.combinableOptions))
 	option = append(option, append(g.uncombinableOptions, g.executePath...)...)
 	option = removeEmpty(option)
 
@@ -208,12 +208,34 @@ func removeEmpty(options []string) []string {
 func (g *GitCmdExecutor) ExecuteCmd(runner GitRunner) (*GitCmdResult, error) {
 	var executePath []string
 	if g.targetIsNeed {
+		ep := map[string]struct{}{}
+		concurrencyLimitSignal := make(chan struct{}, concurrencyLimitNum)
+		responseCh := make(chan string, len(g.target)*len(g.targetRegexp))
+		defer close(concurrencyLimitSignal)
+		defer close(responseCh)
 		for _, v := range g.target {
 			for _, r := range g.targetRegexp {
-				if r.MatchString(v) {
-					executePath = append(executePath, v)
-				}
+				go func(r *regexp.Regexp, target string, response chan<- string, sig chan struct{}) {
+					sig <- struct{}{}
+					if r.MatchString(target) {
+						responseCh <- target
+					} else {
+						responseCh <- ""
+					}
+					<-sig
+				}(r, v, responseCh, concurrencyLimitSignal)
 			}
+		}
+
+		for i := 0; i < len(g.target)*len(g.targetRegexp); i++ {
+			res := <-responseCh
+			if res != "" {
+				ep[res] = struct{}{}
+			}
+		}
+
+		for k := range ep {
+			executePath = append(executePath, k)
 		}
 
 		if len(executePath) == 0 {
