@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os/exec"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -23,16 +24,19 @@ type GitStatusRunner struct {
 
 func (g *GitStatusRunner) Run(gitCmd *GitCmdExecutor) (*GitCmdResult, error) {
 	cmd := gitCmd.commandBuilderInBulk("status")
-	var r []byte
-	r, err := cmd.Output()
-	if err != nil {
-		return nil, err
+	var result []string
+	if !gitCmd.dryRun {
+		r, err := cmd.Output()
+		if err != nil {
+			return nil, err
+		}
+		result, err = GitStatusParse(string(r))
+		if err != nil {
+			return nil, err
+		}
 	}
-	res, err := GitStatusParse(string(r))
-	if err != nil {
-		return nil, err
-	}
-	return &GitCmdResult{result: res, success: true}, nil
+
+	return &GitCmdResult{result: result, success: true}, nil
 }
 
 type GitCheckoutRunner struct {
@@ -241,6 +245,7 @@ func (g *GitCmdExecutor) ExecuteCmd(runner GitRunner) (*GitCmdResult, error) {
 		if len(executePath) == 0 {
 			return nil, errors.New("there is no target path")
 		}
+		sort.Strings(executePath)
 		g.executePath = executePath
 	}
 	result, err := runner.Run(g)
