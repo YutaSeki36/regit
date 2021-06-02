@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -29,7 +30,7 @@ func TestGitCmdExecutor_ExecuteCmdGitCheckout(t *testing.T) {
 			uncombinableOptions: []string{},
 			target:              []string{"cmd/hoge.go", "api/hoge/fuga.go", "api/hoge/fuga.json"},
 			targetRegexp:        "api/hoge/.+go",
-			expectCmd:           "/usr/local/bin/git checkout api/hoge/fuga.go",
+			expectCmd:           "git checkout api/hoge/fuga.go",
 		},
 		{
 			name:                "git checkout api/hoge/fuga.go api/hoge/hoge.go api/hoge_generated.go",
@@ -38,7 +39,7 @@ func TestGitCmdExecutor_ExecuteCmdGitCheckout(t *testing.T) {
 			uncombinableOptions: []string{},
 			target:              []string{"cmd/hoge.go", "api/hoge/fuga.go", "api/hoge/fuga.json", "api/hoge/hoge.go", "api/hoge_generated.go"},
 			targetRegexp:        "api/hoge/.+go,api/.+_generated\\.go",
-			expectCmd:           "/usr/local/bin/git checkout api/hoge/fuga.go api/hoge/hoge.go api/hoge_generated.go",
+			expectCmd:           "git checkout api/hoge/fuga.go api/hoge/hoge.go api/hoge_generated.go",
 		},
 		{
 			name:                "git checkout --theirs api/hoge/fuga.go",
@@ -47,7 +48,7 @@ func TestGitCmdExecutor_ExecuteCmdGitCheckout(t *testing.T) {
 			uncombinableOptions: []string{"--theirs"},
 			target:              []string{"cmd/hoge.go", "api/hoge/fuga.go", "api/hoge/fuga.json", "api/hoge/hoge.go", "api/hoge_generated.go"},
 			targetRegexp:        "api/hoge/.+go",
-			expectCmd:           "/usr/local/bin/git checkout --theirs api/hoge/fuga.go api/hoge/hoge.go",
+			expectCmd:           "git checkout --theirs api/hoge/fuga.go api/hoge/hoge.go",
 		},
 		{
 			name:                "git checkout --ours api/hoge/fuga.go",
@@ -56,7 +57,7 @@ func TestGitCmdExecutor_ExecuteCmdGitCheckout(t *testing.T) {
 			uncombinableOptions: []string{"--ours"},
 			target:              []string{"cmd/hoge.go", "api/hoge/fuga.go", "api/hoge/fuga.json", "api/hoge/hoge.go", "api/hoge_generated.go"},
 			targetRegexp:        "api/hoge/.+go",
-			expectCmd:           "/usr/local/bin/git checkout --ours api/hoge/fuga.go api/hoge/hoge.go",
+			expectCmd:           "git checkout --ours api/hoge/fuga.go api/hoge/hoge.go",
 		},
 	}
 
@@ -67,7 +68,8 @@ func TestGitCmdExecutor_ExecuteCmdGitCheckout(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if result.executedCmd[0] != tc.expectCmd {
+
+			if strings.Contains(tc.expectCmd, result.executedCmd[0]) {
 				t.Fatalf("executed command should be [%s], but [%s]", tc.expectCmd, result.executedCmd)
 			}
 		})
@@ -132,7 +134,7 @@ func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
 			uncombinableOptions: []string{},
 			target:              []string{},
 			targetRegexp:        "",
-			expectCmds:          []string{"/usr/local/bin/git branch"},
+			expectCmds:          []string{"git branch"},
 			dryRun:              true,
 		},
 		{
@@ -142,7 +144,7 @@ func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
 			uncombinableOptions: []string{},
 			target:              []string{"feature/test", "feature/aaa", "develop"},
 			targetRegexp:        "feature/.*",
-			expectCmds:          []string{"/usr/local/bin/git branch -d feature/test", "/usr/local/bin/git branch -d feature/aaa"},
+			expectCmds:          []string{"git branch -d feature/test", "git branch -d feature/aaa"},
 			dryRun:              true,
 		},
 	}
@@ -165,7 +167,7 @@ func TestGitCmdExecutor_ExecuteCmdGitBranch(t *testing.T) {
 
 func contains(s []string, e string) bool {
 	for _, v := range s {
-		if e == v {
+		if strings.Contains(e, v) {
 			return true
 		}
 	}
